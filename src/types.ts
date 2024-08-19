@@ -22,7 +22,17 @@ export type RouteParams = {
  * Configuration of a Route.
  */
 export type RouteConfig = {
+    /**
+     * matched against the hash part of the URL using standard javascript string.match().
+     * All matched groups are available as router.active[name].args[].
+     */
     match: string,
+
+    /**
+     * Inverse of match, if the URL matches then the route is ignored even if match is positive.
+     * Can be useful for routes who may overlap in their URLs but should not be active simultaneously.
+     */
+    nomatch?: string,
 
     /**
      * Absolute or relative URL to push for this route.
@@ -48,8 +58,8 @@ export type RouteConfig = {
     subGroup?: string,
 
     /**
-     * The base of the URL to match.
-     * This is prepended to the match field when performing match.
+     * The base of the URL hash to match.
+     * The hash part of the URL is required to begin with the value of base before continuing to match.
      * Default is "".
      */
     base?: string,

@@ -54,6 +54,15 @@ export class Router {
         this.match();
     }
 
+    /**
+     * Rerun the matching process to refresh the state.
+     * Can be useful when onPreRoute needs to be reevaluated
+     * for the given URL.
+     */
+    public refresh() {
+        this.match();
+    }
+
     public register(routes: Routes) {
         this.routes = {...this.routes, ...routes};
 
@@ -167,10 +176,16 @@ export class Router {
                 continue;
             }
 
-            const {match, group, base, subGroup, reroute} = this.routes[name];
+            const {match, nomatch, group, base, subGroup, reroute} = this.routes[name];
 
             if (!hashURL.startsWith(base ?? "")) {
                 continue;
+            }
+
+            if (nomatch) {
+                if (hashURL.slice(base?.length ?? 0).match(nomatch)?.length) {
+                    continue;
+                }
             }
 
             if (subGroup) {
