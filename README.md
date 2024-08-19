@@ -8,6 +8,8 @@ Instead it uses the `riot.install` feature to make the Router instance available
 
 Simple Router is optionally dependent on the `window` object, so it can also be used in environments where `window` is not accessible, such as in browser plugins.
 
+The class `RouterCtrl` can be used to manage the `Router` without `window`, either in environments who do not support `window` or for testing purposes.
+
 Simple Router works on the hash (`#`) part of the URL. Anything in the URL before the hash is ignored by the Router.
 
 The root route is registered as `/`, not as `/#`, also not as `/#/`.
@@ -16,7 +18,7 @@ The browser location `/`, `/#` and `/#` all match the configured route `/`.
 
 Sub routes can be registered by setting the base field.
 
-Technically registering a sub route using the base route argument is the same as registering the full route with base prepended to the registered `match` field in the route object.
+Technically registering a sub route using the base route argument is similar to registering the full route with base prepended to the registered `match` field in the route object.
 
 There are no real concepts of parent routes and child routes, it is just sugar for when registering a route.
 
@@ -25,7 +27,7 @@ the route configuration.
 
 Note that all registered routes are matched for each round and set as active when matching (there are no hierarchies or early quit).
 
-Althugh, with one exception, if a matched route has `reroute` set then the location is changed to the given routes `pushURL` and match is run again.
+Although, with one exception, if a matched route has `reroute` set then the location is changed to the given routes `pushURL` and match is run again.
 
 ```js
 router.register({
@@ -86,15 +88,18 @@ router.register({
 });
 ```
 
-`page1` in this case is the name of the route, which can be used to do `pushRoute()`.  
+`page1` in this case is the name of the route, which can be used to do `pushRoute()`.
 
 `match="^/page1[/]?$"` will perform a JavaScript `string.match` on the hash part of the url (everything from and including first `/`). All captured fields are passed to the `args` variable.  
+
+`unmatch` same as `match` but if positive match then skip this route.
 
 `pushUrl` is an optional url (absolute or relative) which is the url to redirect to when doing `router.pushRoute("page1")`.  
 
 `group` is an optional field which can be used to group urls and the effect is that `pages` is set as an active route with the same values as `page1`.
 
-`subGroup` if set then at least one route must match who has the subGroup set. Only applicable if `base` matches (if set).
+`subGroup` if set then at least one route must match who has the subGroup set. Only applicable if `base` matches (if base is set).
+For a route using `nomatch` which is skipped due to positive `nomatch` `subGroup` is ignored.
 
 `reroute` if set then immediately when the route is matched the URL is replaced with the pushURL of the reroute route.
 
