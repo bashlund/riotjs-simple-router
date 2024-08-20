@@ -81,8 +81,8 @@ riot.install(function(c) {
 
 router.register({
     page1: {
-        match: "^/page/1[/]?$",
-        pushURL: "/#/page/1",
+        match: "^/page1[/]?$",
+        pushURL: "/#/page1",
         group: "pages",
     }
 });
@@ -108,12 +108,10 @@ In components:
 ```html
 <app>
         <page1 if={router.active.page1} route={router.active.page1}></page1>
-    </route>
 </app>
 
 <app>
         <page1 if={router.active.pages} route={router.active.pages}></page1>
-    </route>
 </app>
 ```
 
