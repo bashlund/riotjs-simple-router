@@ -56,9 +56,11 @@ to have it routed.
 `router.onPreRoute((active: Active) => boolean)` is used to validate the matched route(s) prior to updating the UI. If it returns `true` then `update()` is not called
 to not update the UI unnecessarily if the function did a redirect and another match is queued.
 
-If no routes are matched, then the route `404` is automatically set as an active route as fallback. The `404` route does not need to be registered as a route, if it is it is ignored in the matching process (but still used as intended).
+If no routes are matched or there are missing subGroups, then the route `404` is automatically set as an active route as fallback. The `404` route does not need to be registered as a route, if it is it is ignored in the matching process (but still used as intended).
 
-Also, if no routes are matched then the `router.onFallback((url: string) => boolean)` is called. If the function returns `true` then `onPreRoute()` is not called.
+If `404` is activated then no other routes are set as active.
+
+Also, if the 404 is activated then the `router.onFallback((url: string) => boolean)` is called. If the function returns `true` then `onPreRoute()` is not called.
 
 
 ## Usage
@@ -98,7 +100,7 @@ router.register({
 
 `group` is an optional field which can be used to group urls and the effect is that `pages` is set as an active route with the same values as `page1`.
 
-`subGroup` if set then at least one route must match who has the subGroup set. Only applicable if `base` matches (if base is set).
+`subGroup` if set then at least one route must match who has the subGroup set, else 404 is activated. Only applicable if `base` matches (if base is set).
 For a route using `nomatch` which is skipped due to positive `nomatch` `subGroup` is ignored.
 
 `reroute` if set then immediately when the route is matched the URL is replaced with the pushURL of the reroute route.

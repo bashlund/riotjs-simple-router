@@ -249,6 +249,12 @@ export class Router {
         }
 
         if (notFound || Object.keys(this.active).length === 0) {
+            // Clear out any possible matches so that 404 stands alone.
+            //
+            Object.keys(this.active).forEach( key => {
+                delete this.active[key];
+            });
+
             this.active["404"] = {
                 name: "404",
                 location: this.location,
