@@ -40,6 +40,11 @@ export class Router {
         }
     }
 
+    /**
+     * Event callback for when a match has been performed and an update is due.
+     * Note that this event is possibly fired from within a life cycle event handler,
+     * so do not directly call component.update(), instead wrap that in a setImmediate call.
+     */
     public onUpdate( updateFn: () => void) {
         this.updateFn = updateFn;
     }
@@ -63,16 +68,22 @@ export class Router {
         this.match();
     }
 
+    /**
+     * Register routes.
+     * match is performed automatically.
+     */
     public register(routes: Routes) {
         this.routes = {...this.routes, ...routes};
 
         this.match();
     }
 
+    /**
+     * Remove routes by name.
+     * A match is NOT performed automatically after unregistering.
+     */
     public unregister(routes: Routes) {
         Object.keys(routes).forEach( name => delete this.routes[name] );
-
-        this.match();
     }
 
     /**
