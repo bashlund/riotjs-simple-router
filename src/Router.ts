@@ -88,9 +88,17 @@ export class Router {
 
     /**
      * Redirect to URL given by route name.
+     *
+     * @throws if route does not exist or pushURL not set.
      */
     public pushRoute(name: string) {
-        const pushURL = this.routes[name].pushURL;
+        const route = this.routes[name];
+
+        if (!route) {
+            throw new Error(`Route not configured for ${name}`);
+        }
+
+        const pushURL = route.pushURL;
 
         if (!pushURL) {
             throw new Error(`pushURL not configured for route ${name}`);
@@ -102,8 +110,9 @@ export class Router {
     /**
      * Get the RouteConfig by its name.
      */
-    public getRoute(name: string): RouteConfig {
-        return this.routes[name];
+    public getRoute(name: string): RouteConfig | undefined {
+        const route = this.routes[name];
+        return route;
     }
 
     /**
@@ -115,9 +124,17 @@ export class Router {
 
     /**
      * Replace URL with given URL by route name.
+     *
+     * @throws if route does not exist or pushURL not set.
      */
     public replaceRoute(name: string) {
-        const pushURL = this.routes[name].pushURL;
+        const route = this.routes[name];
+
+        if (!route) {
+            throw new Error(`Route not configured for ${name}`);
+        }
+
+        const pushURL = route.pushURL;
 
         if (!pushURL) {
             throw new Error(`pushURL not configured for route ${name}`);
