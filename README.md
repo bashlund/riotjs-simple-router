@@ -4,11 +4,53 @@ A simple but powerful router for RiotJS.
 
 Simple Router is simple because it doesn't use any tags or components of its own, there are no wrapping of components or use of higher order components.
 
-Instead it uses the `riot.install` feature to make the Router instance available to each component as `this.router`.
+You can load the `Router` in a two different ways:
+
+1.  
+Load the global shared instance automatically using the `window` object.  
+```js
+import {
+    router,  // note lower-case "r", this is an instance.
+} from "riotjs-simple-router";
+```
+
+This is a ready to use Router instance shared across your app.
+
+Note that this option does not rely on `riotjs` and can be used in plain JS/TS.
+
+2.  
+Use the `riot.install` feature to make the Router instance available to each component as `this.router`.  
+
+import {
+    Router,  // note upper-case "R", this is a class.
+} from "riotjs-simple-router";
+
+const router = new Router(window);
+
+```js
+riot.install(function(c) {
+    c.router = router;
+});
+```
 
 Simple Router is optionally dependent on the `window` object, so it can also be used in environments where `window` is not accessible, such as in browser plugins.
 
 The class `RouterCtrl` can be used to manage the `Router` without `window`, either in environments who do not support `window` or for testing purposes.
+
+If the `window` object is not passed as argument to `new Router()` then you should use `RouterCtrl` to mange the `Router` instance.
+
+When loading the global `router` instance `Router` is instantiated only with `window` if it exists globally, meaning in environments where `window` is not available you need to control `router` with a `RouterCtrl`.
+
+```js
+import {
+    router,  // note lower-case "r", this is the instance.
+    RouterCtrl,
+} from "riotjs-simple-router";
+
+// This will hook router so it is contrallable from routerCtrl instance.
+const routerCtrl = new RouterCtrl(router);
+```
+
 
 Simple Router works on the hash (`#`) part of the URL. Anything in the URL before the hash is ignored by the Router.
 
@@ -67,19 +109,8 @@ Also, if the 404 is activated then the `router.onFallback((url: string) => boole
 In `main.js`:  
 
 ```js
-import {Router} from "riotjs-simple-router";
-
-// Optionally pass window object to automatically hook event and control URL redirection.
-// This is optional as the Router can be used in environments where the window object is not
-// accessible by instead hooking events manually.
-//
-const router = new Router(window);
-
-// Make the Router object available to every component as `this.router`.
-//
-riot.install(function(c) {
-    c.router = router;
-});
+// Import global instance of Router.
+import {router} from "riotjs-simple-router";
 
 router.register({
     page1: {
