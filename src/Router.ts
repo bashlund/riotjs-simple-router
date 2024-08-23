@@ -79,11 +79,19 @@ export class Router {
     }
 
     /**
-     * Remove routes by name.
+     * Remove routes by name or all registered routes.
+     *
      * A match is NOT performed automatically after unregistering.
+     *
+     * @param routes if undefined/omitted unregister all routes.
      */
-    public unregister(routes: Routes) {
-        Object.keys(routes).forEach( name => delete this.routes[name] );
+    public unregister(routes?: Routes) {
+        if (!routes) {
+            this.routes = {};
+        }
+        else {
+            Object.keys(routes).forEach( name => delete this.routes[name] );
+        }
     }
 
     /**
@@ -391,5 +399,15 @@ export class Router {
         }
 
         return false;
+    }
+
+    /**
+     * Reset the router's configuration.
+     */
+    public reset() {
+        this.unregister();
+        delete this.preRouteFn;
+        delete this.fallbackFn;
+        delete this.updateFn;
     }
 }
