@@ -6,11 +6,12 @@ Simple Router is simple because it doesn't use any tags or components of its own
 
 You can load the `Router` in a two different ways:
 
-1.  
+### 1. Use the global instance
+
 Load the global shared instance automatically using the `window` object.  
 ```js
 import {
-    router,  // note lower-case "r", this is an instance.
+    router,  // note: lower-case "r", this is an instance.
 } from "riotjs-simple-router";
 ```
 
@@ -18,7 +19,8 @@ This is a ready to use Router instance shared across your app.
 
 Note that this option does not rely on `riotjs` and can be used in plain JS/TS.
 
-2.  
+### 2. Instantiate yourself
+
 Use the `riot.install` feature to make the Router instance available to each component as `this.router`.  
 
 import {
