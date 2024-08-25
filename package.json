@@ -1,6 +1,21 @@
 {
     "name": "riotjs-simple-router",
-    "version": "0.5.0",
+    "version": "0.5.1",
+    "description": "Simple router for RiotJS",
+    "keywords": [
+        "router",
+        "riotjs",
+        "riot"
+    ],
+    "author": "Thomas Backlund",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bashlund/riotjs-simple-router.git"
+    },
+    "bugs": {
+        "url": "https://github.com/bashlund/riotjs-simple-router/issues"
+    },
     "main": "./build/index.js",
     "scripts": {
         "tsc": "npx tsc",
