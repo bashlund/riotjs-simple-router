@@ -210,6 +210,14 @@ export class Router {
         let preRouteRequireAuth = false;
 
         const routes = Object.keys(this.routes);
+
+        // If no routes are registered we do not do anything.
+        // This is to not trigger a 404 in the case of no routes.
+        //
+        if (routes.length === 0) {
+            return;
+        }
+
         const routesLength = routes.length;
         for (let i=0; i<routesLength; i++) {
             const name = routes[i];
