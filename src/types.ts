@@ -69,6 +69,13 @@ export type RouteConfig = {
      * this field and run the match again.
      */
     reroute?: string,
+
+    /**
+     * If any matched route has requireAuth set then pass second argument to onPreRoute as true.
+     * This is of conveniece so that the onPreRoute function does not have to check every
+     * active route if it requires auth.
+     */
+    requireAuth?: boolean,
 };
 
 export type Routes = {[name: string]: RouteConfig};

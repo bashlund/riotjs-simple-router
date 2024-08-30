@@ -12,7 +12,7 @@ export class Router {
     protected routes: Routes = {};
     protected redirectFn?: (url: string) => void;
     protected replaceFn?: (url: string) => void;
-    protected preRouteFn?: (active: ActiveRoutes) => (boolean | undefined);
+    protected preRouteFn?: (active: ActiveRoutes, requireAuth: boolean) => (boolean | undefined);
     protected fallbackFn?: (url: string) => boolean | undefined;
     protected updateFn?: () => void;
 
@@ -183,7 +183,7 @@ export class Router {
      * @param preRouteFn callback to call prior to updating the UI after matching
      * has been processed. If it returns true then update() is not called.
      */
-    public onPreRoute(preRouteFn: (active: ActiveRoutes) => boolean | undefined ) {
+    public onPreRoute(preRouteFn: (active: ActiveRoutes, requireAuth: boolean) => boolean | undefined ) {
         this.preRouteFn = preRouteFn;
     }
 
@@ -207,6 +207,8 @@ export class Router {
 
         const hashURL = this.parseHash(this.location);
 
+        let preRouteRequireAuth = false;
+
         const routes = Object.keys(this.routes);
         const routesLength = routes.length;
         for (let i=0; i<routesLength; i++) {
@@ -216,7 +218,15 @@ export class Router {
                 continue;
             }
 
-            const {match, nomatch, group, base, subGroup, reroute} = this.routes[name];
+            const {
+                match,
+                nomatch,
+                group,
+                base,
+                subGroup,
+                reroute,
+                requireAuth,
+            } = this.routes[name];
 
             if (!hashURL.startsWith(base ?? "")) {
                 continue;
@@ -263,6 +273,8 @@ export class Router {
                 if (subGroup) {
                     subGroupsSatisfied[subGroup] = true;
                 }
+
+                preRouteRequireAuth = preRouteRequireAuth || (requireAuth ?? false);
             }
         }
 
@@ -299,7 +311,7 @@ export class Router {
             }
         }
 
-        if (this.preRouteFn && this.preRouteFn(this.active) === true) {
+        if (this.preRouteFn && this.preRouteFn(this.active, preRouteRequireAuth) === true) {
             return;
         }
 
