@@ -59,6 +59,10 @@ export class Router {
         this.match();
     }
 
+    public getLocation(): string {
+        return this.location;
+    }
+
     /**
      * Rerun the matching process to refresh the state.
      * Can be useful when onPreRoute needs to be reevaluated
